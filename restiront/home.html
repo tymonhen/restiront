@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Recommender</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 600px; margin: auto; display: flex; flex-direction: column; align-items: center; }
+        #buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .button { 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            border: 1px solid #000; 
+            cursor: pointer; 
+            display: inline-block; 
+            background-color: lightgray; 
+            transition: background 0.3s;
+        }
+        .selected { 
+            background: linear-gradient(to right, blue, purple); 
+            color: white; 
+        }
+        #results { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Food Recommender</h1>
+        <p>Select your preferred attributes:</p>
+        <div id="buttons">
+            <div class="button" data-attr="spicy">Spicy</div>
+            <div class="button" data-attr="savory">Savory</div>
+            <div class="button" data-attr="sweet">Sweet</div>
+            <div class="button" data-attr="low-carb">Low Carb</div>
+            <div class="button" data-attr="high-protein">High Protein</div>
+            <div class="button" data-attr="flavorful">Flavorful</div>
+        </div>
+        <button onclick="recommendFood()">Find Food</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const foodData = [
+            { name: "Apple", attributes: ["sweet"] },
+            { name: "Chicken Tikka Masala", attributes: ["spicy", "high-protein", "flavorful"] },
+            { name: "Salmon", attributes: ["savory", "high-protein", "low-carb"] },
+            { name: "Dark Chocolate", attributes: ["sweet", "flavorful"] },
+            { name: "Tofu Stir Fry", attributes: ["savory", "flavorful", "low-carb"] }
+        ];
+
+        const selectedAttributes = new Set();
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('click', () => {
+                const attr = button.getAttribute('data-attr');
+                if (selectedAttributes.has(attr)) {
+                    selectedAttributes.delete(attr);
+                    button.classList.remove('selected');
+                } else {
+                    selectedAttributes.add(attr);
+                    button.classList.add('selected');
+                }
+            });
+        });
+
+        function recommendFood() {
+            const matchedFoods = foodData.filter(food => 
+                food.attributes.some(attr => selectedAttributes.has(attr))
+            );
+            
+            document.getElementById('results').innerHTML = matchedFoods.length > 0 ?
+                "Recommended foods: " + matchedFoods.map(food => food.name).join(", ") :
+                "No matching foods found.";
+        }
+    </script>
+</body>
+</html>
