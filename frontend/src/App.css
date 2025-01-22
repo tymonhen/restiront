@@ -1,0 +1,82 @@
+.App {
+  text-align: center;
+  background-color: #f0f8ff; /* Light blue background for a fresh look */
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #ff6f61; /* Coral color for a vibrant header */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #fff; /* White text for contrast */
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.swipe-container {
+  width: 375px; /* Width similar to an iPhone */
+  height: 667px; /* Height similar to an iPhone */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+  border-radius: 40px; /* Rounded corners for an iPhone-like shape */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Deeper shadow for a 3D effect */
+  background-color: #fff; /* White background for the image container */
+  border: 2px solid #ff6f61; /* Border to match the header color */
+}
+
+.swipe-container.left {
+  transform: translateX(-100%);
+}
+
+.swipe-container.right {
+  transform: translateX(100%);
+}
+
+.App-food-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container without distortion */
+}
+
+p {
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Fun font for text */
+  color: #ff6f61; /* Matching text color */
+}
+
+a {
+  color: #ff6f61;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #ff4500; /* Darker coral on hover for interactivity */
+}
