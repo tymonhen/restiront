@@ -1,6 +1,11 @@
 .App {
   text-align: center;
   background-color: #f0f8ff; /* Light blue background for a fresh look */
+  transition: opacity 0.5s ease-in-out; /* Transition for fade effect */
+}
+
+.App.fade-out {
+  opacity: 0; /* Fade out effect */
 }
 
 .App-logo {
@@ -79,4 +84,59 @@ a {
 
 a:hover {
   color: #ff4500; /* Darker coral on hover for interactivity */
+}
+
+.form-page {
+  background-color: #f0f8ff; /* Match the app background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.5s ease-in-out; /* Transition for fade effect */
+}
+
+.form-page h1 {
+  color: #ff6f61; /* Coral color for the heading */
+  margin-bottom: 20px;
+}
+
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input[type="text"] {
+  width: 95%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #ff6f61;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #ff4500; /* Darker coral on hover */
 }
