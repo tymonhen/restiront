@@ -22,11 +22,7 @@ function CreateGroupPage() {
 
   const copyToClipboard = () => {
     const link = `${window.location.origin}/form/${groupId}`;
-    navigator.clipboard.writeText(link).then(() => {
-      alert('Link copied to clipboard!');
-    }, (err) => {
-      console.error('Could not copy text: ', err);
-    });
+    navigator.clipboard.writeText(link);
   };
 
   return (
