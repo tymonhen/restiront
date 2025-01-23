@@ -1,0 +1,21 @@
+.restaurant-recommendation {
+  background-color: #FFE9CE;
+  border: 2px solid #FFBE86;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-name {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.recommended-dish {
+  font-size: 16px;
+  color: #555;
+} 

@@ -30,6 +30,7 @@ function FinalResultsPage() {
   const fetchRecommendations = async () => {
     try {
       const response = await axios.post(`http://localhost:5025/get-recommendations/${groupId}`);
+      console.log('Recommendations fetched:', response.data.recommendations); // Debugging log
       setRecommendations(response.data.recommendations);
     } catch (error) {
       console.error('Error fetching recommendations:', error);

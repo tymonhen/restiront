@@ -102,8 +102,8 @@ app.post('/get-recommendations/:groupId', async (req, res) => {
   try {
     const response = await axios.post('https://api.anthropic.com/v1/messages', {
         model: 'claude-3-haiku-20240307', // Ensure this is the correct model identifier
-        max_tokens: 100, // Adjust as needed for haiku
-        system: 'You are a restaurant picker assistant. Use the information given to generate a taste profile for the user.',
+        max_tokens: 500, // Adjust as needed for haiku
+        system: 'You are a restaurant picker assistant. Use the information given to generate a taste profile for the user. Be concise and to the point. Give the name of the restaurant and the names of the dishes for each person. Do not include any other information. Give three of these recommendations. Be specific about the names of dishes and only recommend dishes that are offered at the restaurant.',
         messages: [
           { role: 'user', content: prompt }
         ]
@@ -115,8 +115,8 @@ app.post('/get-recommendations/:groupId', async (req, res) => {
       }
     });
 
-    if (response.data.choices && response.data.choices.length > 0) {
-      res.json({ recommendations: response.data.choices[0].text });
+    if (response.data.content && response.data.content.length > 0) {
+      res.json({ recommendations: response.data.content[0].text });
     } else {
       console.error('Unexpected API response format:', response.data);
       res.status(500).json({ error: 'Unexpected API response format' });
@@ -134,7 +134,7 @@ const generatePrompt = (data) => {
     const allergies = data.allergies[name] || 'Nothing';
     prompt += `${name}: likes ${likes}\nAllergies: ${allergies}\n\n`;
   });
-  prompt += 'Find one restaurants near Duke University that match the preferences of all users and recommend a dish at that restaurant for each person.';
+  prompt += 'Find three restaurants near Duke University that match the preferences of all users and recommend a dish at that restaurant for each person.';
   return prompt;
 };
 

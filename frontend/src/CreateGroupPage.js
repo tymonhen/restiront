@@ -33,13 +33,13 @@ function CreateGroupPage() {
     <div className="create-group-page">
       <img src="/images/logo.png" alt="Logo" className="create-group-logo" />
       <button onClick={createGroup} className="create-group-button">
-        Create Group
+        Create Bunch
       </button>
       <img src="/images/chick.png" alt="Chick" className="bottom-image" />
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <p>Share this link with your group:</p>
+            <p>Share this link with your bunch:</p>
             <div className="link-box">
               {window.location.origin}/form/{groupId}
             </div>
