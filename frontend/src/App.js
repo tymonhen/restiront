@@ -16,7 +16,13 @@ const foodImages = [
   { id: 1, src: '/images/burger.jpg', name: 'Burger' },
   { id: 2, src: '/images/pizza.jpg', name: 'Pizza' },
   { id: 3, src: '/images/sushi.jpg', name: 'Sushi' },
-  // Add more food images as needed
+  { id: 4, src: '/images/Pasta.png', name: 'Pasta and Red Sauce' },
+  { id: 5, src: '/images/burrito.png', name: 'Chicken Burrito' },
+  { id: 6, src: '/images/Peruvian Chicken.png', name: 'Roasted Peruvian Chicken (From Alpaca)' },
+  { id: 7, src: '/images/Chicken Soup.png', name: 'Chicken Noodle Soup' },
+  { id: 8, src: '/images/IMG_6956.png', name: 'Hora’a Osbao (Syrian Lentil Salad)' },
+  { id: 9, src: '/images/Egg Curry.png', name: 'Egg Curry (from Lime and Lemon)' },
+  { id: 10, src: '/images/Juju.png', name: 'Mongolian Beef and Vegetables (from Juju)' }
 ];
 
 function FormPage({ setUserProfile }) {
