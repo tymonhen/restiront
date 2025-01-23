@@ -20,7 +20,7 @@ const foodImages = [
   { id: 5, src: '/images/burrito.png', name: 'Chicken Burrito' },
   { id: 6, src: '/images/Peruvian Chicken.png', name: 'Roasted Peruvian Chicken (From Alpaca)' },
   { id: 7, src: '/images/Chicken Soup.png', name: 'Chicken Noodle Soup' },
-  { id: 8, src: '/images/IMG_6956.png', name: 'Hora’a Osbao (Syrian Lentil Salad)' },
+  { id: 8, src: '/images/IMG_6956.png', name: 'Hora'a Osbao (Syrian Lentil Salad)' },
   { id: 9, src: '/images/Egg Curry.png', name: 'Egg Curry (from Lime and Lemon)' },
   { id: 10, src: '/images/Juju.png', name: 'Mongolian Beef and Vegetables (from Juju)' }
 ];
@@ -100,7 +100,8 @@ function SwipePage({ userProfile, setProfile }) {
         setTimeout(async () => {
           try {
             console.log('Sending data to backend:', { name: userProfile.name, allergies: userProfile.allergies, likedFoods });
-            const response = await axios.post(`http://localhost:5025/update-swipes/${groupId}`, {
+            const apiUrl = process.env.REACT_APP_API_URL;
+            const response = await axios.post(`${apiUrl}/update-swipes/${groupId}`, {
               name: userProfile.name,
               likedFoods,
               allergies: userProfile.allergies
