@@ -6,7 +6,9 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 const port = 5025; // Changed port to 5025
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000'
+}));
 app.use(express.json());
 
 let groups = {}; // In-memory store for demonstration
@@ -135,7 +137,7 @@ const generatePrompt = (data) => {
     const allergies = data.allergies[name] || 'Nothing';
     prompt += `${name}: likes ${likes}\nAllergies: ${allergies}\n\n`;
   });
-  prompt += 'Find ONE (AND ONLY ONE) restaurant near Duke University that MUST BE IN DURHAM, CARY, RALEIGH, OR CHAPEL HILL, NC that matches the preferences of all users and recommend a dish at that restaurant for each person. IMPORTANT: FOR EACH USER ONLY RECOMMEND ONE DISH. You must follow this format: Restaurant Name%UserName:Dish Name%...';
+  prompt += 'Find ONE (AND ONLY ONE) restaurant near Duke University that MUST BE IN DURHAM, CARY, RALEIGH, OR CHAPEL HILL, NC that matches the preferences of all users and recommend a dish at that restaurant for each person. IMPORTANT: FOR EACH USER ONLY RECOMMEND ONE DISH. You must follow this format: Restaurant Name, UserName:Dish Name...';
   return prompt;
 };
 
