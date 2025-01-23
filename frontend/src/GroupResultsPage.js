@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './GroupResultsPage.css';
@@ -6,6 +6,8 @@ import './GroupResultsPage.css';
 function GroupResultsPage() {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState(null);
+  const previousGroupData = useRef(null);
+  const [animate, setAnimate] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +23,20 @@ function GroupResultsPage() {
     };
 
     fetchGroupData();
+
+    const intervalId = setInterval(fetchGroupData, 3000); // Poll every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [groupId]);
+
+  useEffect(() => {
+    if (groupData && previousGroupData.current && JSON.stringify(groupData) !== JSON.stringify(previousGroupData.current)) {
+      setAnimate(true);
+      const timer = setTimeout(() => setAnimate(false), 1000); // Animation duration
+      return () => clearTimeout(timer);    }
+    previousGroupData.current = groupData;
+  }, [groupData]);
+
 
   const handleDone = () => {
     // Redirect to the final results page
@@ -34,7 +49,7 @@ function GroupResultsPage() {
       {groupData ? (
         <div>
           <h2>Participants Ready to Munch</h2>
-          <ul>
+          <ul className={animate ? 'animate' : ''}>
             {groupData.participants.map((name) => (
               <li key={name}>
                 <strong>{name}</strong>
