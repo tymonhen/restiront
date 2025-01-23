@@ -30,7 +30,7 @@ function FormPage({ setUserProfile }) {
         </div>
         <div>
           <label>
-            Allergies:
+            Allergies/Dietary Restrictions:
             <input
               type="text"
               value={allergies}

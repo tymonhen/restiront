@@ -42,11 +42,13 @@ function SwipePage({ userProfile, setProfile }) {
         // Generate taste profile after swiping
         setTimeout(async () => {
           try {
-            const response = await axios.post('http://localhost:5025/generate-taste-profile', {
+            console.log('Sending data to backend:', { name: userProfile.name, allergies: userProfile.allergies, likedFoods });
+            const response = await axios.post('http://localhost:5025/summarize-taste-profile', {
               name: userProfile.name,
               allergies: userProfile.allergies,
               likedFoods
             });
+            console.log('Received profile from backend:', response.data.summary);
             setProfile(response.data.profile);
             navigate('/taste-profile'); // Redirect to taste profile page
           } catch (error) {
