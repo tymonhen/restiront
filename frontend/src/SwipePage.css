@@ -1,0 +1,71 @@
+.App {
+  background-color: #FFE9CE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: #FFBE86;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.swipe-container {
+  position: relative;
+  width: 250px;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.swipe-container.left {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.swipe-container.right {
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.App-food-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.App-food-image.next {
+  transform: scale(0.95);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -7,6 +7,9 @@ import CreateGroupPage from './CreateGroupPage';
 import GroupResultsPage from './GroupResultsPage';
 import FinalResultsPage from './FinalResultsPage';
 import axios from 'axios';
+import './FormPage.css'; // Import the CSS file
+import './SwipePage.css'; // Import the CSS file
+
 
 // Sample data for food images
 const foodImages = [
@@ -30,7 +33,7 @@ function FormPage({ setUserProfile }) {
 
   return (
     <div className="form-page">
-      <h1>Tell us about yourself</h1>
+      <img src='/images/logo.png' alt="Logo" className="logo" />
       <form onSubmit={handleSubmit}>
         <div>
           <label>
@@ -122,6 +125,14 @@ function SwipePage({ userProfile, setProfile }) {
               alt={foodImages[currentIndex].name}
               draggable="false"
             />
+            {foodImages[currentIndex + 1] && (
+              <img
+                src={foodImages[currentIndex + 1].src}
+                className="App-food-image next"
+                alt={foodImages[currentIndex + 1].name}
+                draggable="false"
+              />
+            )}
           </div>
         ) : (
           <p>No more food to swipe!</p>
