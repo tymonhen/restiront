@@ -11,7 +11,7 @@ function FinalResultsPage() {
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5025/group-results/${groupId}`);
+        const response = await axios.get(`${process.env.BACKEND_URL}/group-results/${groupId}`);
         setGroupData(response.data);
       } catch (error) {
         console.error('Error fetching group data:', error);
@@ -29,7 +29,7 @@ function FinalResultsPage() {
 
   const fetchRecommendations = async () => {
     try {
-      const response = await axios.post(`http://localhost:5025/get-recommendations/${groupId}`);
+      const response = await axios.post(`${process.env.BACKEND_URL}/get-recommendations/${groupId}`);
       console.log('Recommendations fetched:', response.data.recommendations); // Debugging log
       setRecommendations(response.data.recommendations);
     } catch (error) {
