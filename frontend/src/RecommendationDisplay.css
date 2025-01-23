@@ -1,4 +1,4 @@
-.restaurant-recommendation {
+.recommendation-display {
   background-color: #FFBE86;
   border-radius: 10px;
   padding: 15px;
@@ -16,13 +16,13 @@
   text-align: center;
 }
 
-.recommendation-list {
+.user-dish-list {
   list-style-type: none;
   padding: 0;
   text-align: left;
 }
 
-.recommendation-item {
+.user-dish-item {
   font-size: 16px;
   color: #555;
   margin-bottom: 5px;

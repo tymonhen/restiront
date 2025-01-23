@@ -39,15 +39,15 @@ function FinalResultsPage() {
 
   return (
     <div className="final-results-page">
-      <h1>Final Group Results</h1>
+      <h1>We Recommend:</h1>
       {groupData ? (
         <div>
-          <h2>Recommendations:</h2>
           <p>{recommendations || 'Loading recommendations...'}</p>
         </div>
       ) : (
         <p>Loading...</p>
       )}
+      <img src='/images/chick.png' alt="Chick" className="chick-image" />
     </div>
   );
 }
