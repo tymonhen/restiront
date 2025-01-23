@@ -88,6 +88,56 @@ app.get('/group-results/:groupId', (req, res) => {
   res.json(groups[groupId]);
 });
 
+// New endpoint to get restaurant recommendations
+app.post('/get-recommendations/:groupId', async (req, res) => {
+  const { groupId } = req.params;
+
+  if (!groups[groupId]) {
+    return res.status(404).json({ error: 'Group not found' });
+  }
+
+  const groupData = groups[groupId];
+  const prompt = generatePrompt(groupData);
+  console.log('Prompt:', prompt);
+  try {
+    const response = await axios.post('https://api.anthropic.com/v1/messages', {
+        model: 'claude-3-haiku-20240307', // Ensure this is the correct model identifier
+        max_tokens: 100, // Adjust as needed for haiku
+        system: 'You are a restaurant picker assistant. Use the information given to generate a taste profile for the user.',
+        messages: [
+          { role: 'user', content: prompt }
+        ]
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      }
+    });
+
+    if (response.data.choices && response.data.choices.length > 0) {
+      res.json({ recommendations: response.data.choices[0].text });
+    } else {
+      console.error('Unexpected API response format:', response.data);
+      res.status(500).json({ error: 'Unexpected API response format' });
+    }
+  } catch (error) {
+    console.error('Error fetching recommendations:', error.response ? error.response.data : error.message);
+    res.status(500).json({ error: 'Failed to fetch recommendations' });
+  }
+});
+
+const generatePrompt = (data) => {
+  let prompt = 'For these users:\n\n';
+  data.participants.forEach((name) => {
+    const likes = data.swipes[name].join(', ');
+    const allergies = data.allergies[name] || 'Nothing';
+    prompt += `${name}: likes ${likes}\nAllergies: ${allergies}\n\n`;
+  });
+  prompt += 'Find one restaurants near Duke University that match the preferences of all users and recommend a dish at that restaurant for each person.';
+  return prompt;
+};
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 }); 

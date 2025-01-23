@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import './GroupResultsPage.css';
+import { useParams } from 'react-router-dom';
+import './FinalResultsPage.css';
 
-function GroupResultsPage() {
+function FinalResultsPage() {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState(null);
-  const navigate = useNavigate();
+  const [recommendations, setRecommendations] = useState('');
 
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
-        console.log(`Fetching data for group: ${groupId}`);
         const response = await axios.get(`http://localhost:5025/group-results/${groupId}`);
-        console.log('Received group data:', response.data);
         setGroupData(response.data);
       } catch (error) {
         console.error('Error fetching group data:', error);
@@ -23,17 +21,27 @@ function GroupResultsPage() {
     fetchGroupData();
   }, [groupId]);
 
-  const handleDone = () => {
-    // Redirect to the final results page
-    navigate(`/final-results/${groupId}`);
+  useEffect(() => {
+    if (groupData) {
+      fetchRecommendations();
+    }
+  }, [groupData]);
+
+  const fetchRecommendations = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5025/get-recommendations/${groupId}`);
+      setRecommendations(response.data.recommendations);
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+    }
   };
 
   return (
-    <div className="group-results-page">
-      <h1>Group Results</h1>
+    <div className="final-results-page">
+      <h1>Final Group Results</h1>
       {groupData ? (
         <div>
-          <h2>Participants, Their Liked Foods, and Allergies:</h2>
+          <h2>All Members, Their Liked Foods, and Allergies:</h2>
           <ul>
             {groupData.participants.map((name) => (
               <li key={name}>
@@ -43,7 +51,8 @@ function GroupResultsPage() {
               </li>
             ))}
           </ul>
-          <button onClick={handleDone} className="done-button">Done</button>
+          <h2>Recommendations:</h2>
+          <p>{recommendations || 'Loading recommendations...'}</p>
         </div>
       ) : (
         <p>Loading...</p>
@@ -52,4 +61,4 @@ function GroupResultsPage() {
   );
 }
 
-export default GroupResultsPage; 
+export default FinalResultsPage; 

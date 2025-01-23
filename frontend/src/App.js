@@ -5,6 +5,7 @@ import './App.css';
 import TasteProfilePage from './TasteProfilePage';
 import CreateGroupPage from './CreateGroupPage';
 import GroupResultsPage from './GroupResultsPage';
+import FinalResultsPage from './FinalResultsPage';
 import axios from 'axios';
 
 // Sample data for food images
@@ -142,6 +143,7 @@ function App() {
         <Route path="/swipe/:groupId" element={<SwipePage userProfile={userProfile} setProfile={setProfile} />} />
         <Route path="/taste-profile" element={<TasteProfilePage profile={profile} />} />
         <Route path="/group-results/:groupId" element={<GroupResultsPage />} />
+        <Route path="/final-results/:groupId" element={<FinalResultsPage />} />
       </Routes>
     </Router>
   );
