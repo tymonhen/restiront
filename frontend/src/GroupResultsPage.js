@@ -30,16 +30,14 @@ function GroupResultsPage() {
 
   return (
     <div className="group-results-page">
-      <h1>Group Results</h1>
+      <img src='/images/logo.png' alt="Logo" className="logo" />
       {groupData ? (
         <div>
-          <h2>Participants, Their Liked Foods, and Allergies:</h2>
+          <h2>Participants Ready to Munch</h2>
           <ul>
             {groupData.participants.map((name) => (
               <li key={name}>
-                <strong>{name}</strong>: 
-                <br />Liked Foods: {groupData.swipes[name].join(', ')}
-                <br />Allergies: {groupData.allergies[name] || 'None'}
+                <strong>{name}</strong>
               </li>
             ))}
           </ul>

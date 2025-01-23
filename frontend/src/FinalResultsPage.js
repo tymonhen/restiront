@@ -42,16 +42,6 @@ function FinalResultsPage() {
       <h1>Final Group Results</h1>
       {groupData ? (
         <div>
-          <h2>All Members, Their Liked Foods, and Allergies:</h2>
-          <ul>
-            {groupData.participants.map((name) => (
-              <li key={name}>
-                <strong>{name}</strong>: 
-                <br />Liked Foods: {groupData.swipes[name].join(', ')}
-                <br />Allergies: {groupData.allergies[name] || 'None'}
-              </li>
-            ))}
-          </ul>
           <h2>Recommendations:</h2>
           <p>{recommendations || 'Loading recommendations...'}</p>
         </div>
