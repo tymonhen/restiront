@@ -7,6 +7,7 @@ function GroupResultsPage() {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState(null);
   const previousGroupData = useRef(null);
+  const [animate, setAnimate] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,8 +31,9 @@ function GroupResultsPage() {
 
   useEffect(() => {
     if (groupData && previousGroupData.current && JSON.stringify(groupData) !== JSON.stringify(previousGroupData.current)) {
-      window.location.reload();
-    }
+      setAnimate(true);
+      const timer = setTimeout(() => setAnimate(false), 1000); // Animation duration
+      return () => clearTimeout(timer);    }
     previousGroupData.current = groupData;
   }, [groupData]);
 
@@ -47,7 +49,7 @@ function GroupResultsPage() {
       {groupData ? (
         <div>
           <h2>Participants Ready to Munch</h2>
-          <ul>
+          <ul className={animate ? 'animate' : ''}>
             {groupData.participants.map((name) => (
               <li key={name}>
                 <strong>{name}</strong>
