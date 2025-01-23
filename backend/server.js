@@ -2,11 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
 const app = express();
 const port = 5025; // Changed port to 5025
 
 app.use(cors());
 app.use(express.json());
+
+let groups = {}; // In-memory store for demonstration
 
 app.post('/summarize-taste-profile', async (req, res) => {
   try {
@@ -44,6 +47,45 @@ app.post('/summarize-taste-profile', async (req, res) => {
       details: error.response?.data || error.message 
     });
   }
+});
+
+// Endpoint to create a new group session
+app.post('/create-group', (req, res) => {
+  const groupId = uuidv4();
+  groups[groupId] = { participants: [], swipes: {}, allergies: {} };
+  res.json({ groupId });
+});
+
+// Endpoint to update swiping data
+app.post('/update-swipes/:groupId', (req, res) => {
+  const { groupId } = req.params;
+  const { name, likedFoods, allergies } = req.body;
+
+  if (!groups[groupId]) {
+    return res.status(404).json({ error: 'Group not found' });
+  }
+
+  // Update the group's data
+  if (!groups[groupId].participants.includes(name)) {
+    groups[groupId].participants.push(name);
+  }
+  groups[groupId].swipes[name] = likedFoods;
+  groups[groupId].allergies[name] = allergies;
+
+  console.log(`Updated allergies for ${name}:`, allergies); // Debugging log
+
+  res.json({ message: 'Swipes and allergies updated' });
+});
+
+// Endpoint to get group results
+app.get('/group-results/:groupId', (req, res) => {
+  const { groupId } = req.params;
+
+  if (!groups[groupId]) {
+    return res.status(404).json({ error: 'Group not found' });
+  }
+
+  res.json(groups[groupId]);
 });
 
 app.listen(port, () => {

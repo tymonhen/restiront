@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import './App.css';
-import FormPage from './FormPage'; // Import the form component
-import TasteProfilePage from './TasteProfilePage'; // Import the taste profile component
+import TasteProfilePage from './TasteProfilePage';
+import CreateGroupPage from './CreateGroupPage';
+import GroupResultsPage from './GroupResultsPage';
 import axios from 'axios';
 
 // Sample data for food images
@@ -14,12 +15,56 @@ const foodImages = [
   // Add more food images as needed
 ];
 
+function FormPage({ setUserProfile }) {
+  const [name, setName] = useState('');
+  const [allergies, setAllergies] = useState('');
+  const navigate = useNavigate();
+  const { groupId } = useParams();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setUserProfile({ name, allergies });
+    navigate(`/swipe/${groupId}`); // Navigate to the swiping page with groupId
+  };
+
+  return (
+    <div className="form-page">
+      <h1>Tell us about yourself</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>
+            Name:
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Allergies:
+            <input
+              type="text"
+              value={allergies}
+              onChange={(e) => setAllergies(e.target.value)}
+            />
+          </label>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
+
 function SwipePage({ userProfile, setProfile }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedFoods, setLikedFoods] = useState([]);
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [transitioning, setTransitioning] = useState(false);
   const navigate = useNavigate();
+  const { groupId } = useParams();
 
   const handlers = useSwipeable({
     onSwipedLeft: () => handleSwipe('left'),
@@ -32,25 +77,27 @@ function SwipePage({ userProfile, setProfile }) {
     setSwipeDirection(direction);
     setTimeout(() => {
       if (direction === 'right') {
-        setLikedFoods([...likedFoods, foodImages[currentIndex].name]);
+        const likedFood = foodImages[currentIndex].name;
+        console.log(`Swiped right on: ${likedFood}`); // Debugging log
+        setLikedFoods((prevLikedFoods) => [...prevLikedFoods, likedFood]);
       }
       const nextIndex = currentIndex + 1;
       if (nextIndex < foodImages.length) {
         setCurrentIndex(nextIndex);
       } else {
         setTransitioning(true);
-        // Generate taste profile after swiping
+        // Submit liked foods to backend
         setTimeout(async () => {
           try {
             console.log('Sending data to backend:', { name: userProfile.name, allergies: userProfile.allergies, likedFoods });
-            const response = await axios.post('http://localhost:5025/summarize-taste-profile', {
+            const response = await axios.post(`http://localhost:5025/update-swipes/${groupId}`, {
               name: userProfile.name,
-              allergies: userProfile.allergies,
-              likedFoods
+              likedFoods,
+              allergies: userProfile.allergies
             });
-            console.log('Received profile from backend:', response.data.summary);
+            console.log('Received profile from backend:', response.data.profile);
             setProfile(response.data.profile);
-            navigate('/taste-profile'); // Redirect to taste profile page
+            navigate(`/group-results/${groupId}`); // Redirect to group results page
           } catch (error) {
             console.error('Error generating taste profile:', error);
           }
@@ -90,9 +137,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<FormPage setUserProfile={setUserProfile} />} /> {/* Form page as the initial route */}
-        <Route path="/swipe" element={<SwipePage userProfile={userProfile} setProfile={setProfile} />} /> {/* Swiping page as the subsequent route */}
+        <Route path="/" element={<CreateGroupPage />} />
+        <Route path="/form/:groupId" element={<FormPage setUserProfile={setUserProfile} />} />
+        <Route path="/swipe/:groupId" element={<SwipePage userProfile={userProfile} setProfile={setProfile} />} />
         <Route path="/taste-profile" element={<TasteProfilePage profile={profile} />} />
+        <Route path="/group-results/:groupId" element={<GroupResultsPage />} />
       </Routes>
     </Router>
   );
