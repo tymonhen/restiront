@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './GroupResultsPage.css';
@@ -6,6 +6,7 @@ import './GroupResultsPage.css';
 function GroupResultsPage() {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState(null);
+  const previousGroupData = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +22,19 @@ function GroupResultsPage() {
     };
 
     fetchGroupData();
+
+    const intervalId = setInterval(fetchGroupData, 3000); // Poll every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [groupId]);
+
+  useEffect(() => {
+    if (groupData && previousGroupData.current && JSON.stringify(groupData) !== JSON.stringify(previousGroupData.current)) {
+      window.location.reload();
+    }
+    previousGroupData.current = groupData;
+  }, [groupData]);
+
 
   const handleDone = () => {
     // Redirect to the final results page
